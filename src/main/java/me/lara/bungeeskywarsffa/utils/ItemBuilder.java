@@ -14,8 +14,9 @@ public class ItemBuilder {
         assert itemMeta != null;
         itemMeta.setDisplayName(displayName);
         itemMeta.setLore(lore);
-        itemStack.setItemMeta(itemMeta);
         itemMeta.setUnbreakable(unbreakable);
+
+        itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
 
