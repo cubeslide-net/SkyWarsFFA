@@ -1,0 +1,7 @@
+name: BungeeSkywarsFFA
+version: '${project.version}'
+main: me.lara.bungeeskywarsffa.BungeeSkywarsFFA
+api-version: 1.19
+authors: [ Timeox2k ]
+commands:
+  setup:
