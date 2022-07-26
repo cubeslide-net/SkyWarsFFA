@@ -25,14 +25,21 @@ public class CommandStats implements CommandExecutor {
             final int kills = database.getKills(uuid);
             final int deaths = database.getDeaths(uuid);
 
+            double kdr = 0;
+
+            if(kills != 0 && deaths == 0) {
+                kdr = (double) kills;
+            } else if(deaths == 0 && kills == 0) {
+                kdr = 0;
+            } else if(deaths != 0 && kills == 0) {
+                kdr = 0;
+            } else {
+                kdr = (double) (kills / deaths);
+            }
+
             player.sendMessage("§9Kills§8: §3" + kills);
             player.sendMessage("§9Deaths§8: §3" + deaths);
-
-            try {
-                player.sendMessage("§9KD§8: §3" + (double) (kills / deaths));
-            } catch (Exception exception) {
-                player.sendMessage("§9KD§8: §30.0");
-            }
+            player.sendMessage("§9KD§8: §3" + kdr);
 
             player.sendMessage("§7§m--------§r§6Stats of " + player.getName() + "§7§m--------");
         } else {
@@ -50,14 +57,22 @@ public class CommandStats implements CommandExecutor {
             final int kills = database.getKills(target.getUniqueId());
             final int deaths = database.getDeaths(target.getUniqueId());
 
+            double kdr = 0;
+
+            if(kills != 0 && deaths == 0) {
+                kdr = (double) kills;
+            } else if(deaths == 0 && kills == 0) {
+                kdr = 0;
+            } else if(deaths != 0 && kills == 0) {
+                kdr = 0;
+            } else {
+                kdr = (double) (kills / deaths);
+            }
+
             player.sendMessage("§9Kills§8: §3" + kills);
             player.sendMessage("§9Deaths§8: §3" + deaths);
+            player.sendMessage("§9KD§8: §3" + kdr);
 
-            try {
-                player.sendMessage("§9KD§8: §3" + (double) (kills / deaths));
-            } catch (Exception exception) {
-                player.sendMessage("§9KD§8: §30.0");
-            }
             player.sendMessage("§7§m--------§r§6Stats of " + target.getName() + "§7§m--------");
 
         }
