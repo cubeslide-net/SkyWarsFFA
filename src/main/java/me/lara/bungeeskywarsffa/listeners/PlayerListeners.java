@@ -1,6 +1,7 @@
 package me.lara.bungeeskywarsffa.listeners;
 
 import me.lara.bungeeskywarsffa.BungeeSkywarsFFA;
+import me.lara.bungeeskywarsffa.utils.Database;
 import me.lara.bungeeskywarsffa.utils.KitUtils;
 import me.lara.bungeeskywarsffa.utils.LocationUtils;
 import org.bukkit.Bukkit;
@@ -16,13 +17,18 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 
+import javax.xml.crypto.Data;
 import java.util.Objects;
+import java.util.UUID;
 
 public class PlayerListeners implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
+        final BungeeSkywarsFFA instance = BungeeSkywarsFFA.getInstance();
+        final Database database = instance.getDatabase();
+
         event.setJoinMessage("");
 
         if (LocationUtils.spawnLocation() == null) {
@@ -30,6 +36,11 @@ public class PlayerListeners implements Listener {
         }
 
         player.teleport(Objects.requireNonNull(LocationUtils.spawnLocation()));
+
+        final UUID uuid = player.getUniqueId();
+        if(!database.doesPlayerExistByUUID(uuid)) {
+            database.createNewUser(uuid);
+        }
     }
 
     @EventHandler
@@ -52,6 +63,7 @@ public class PlayerListeners implements Listener {
     public void onDeath(PlayerDeathEvent event) {
         final Player player = event.getEntity();
         final Player killer = event.getEntity().getKiller();
+        final Database database = BungeeSkywarsFFA.getInstance().getDatabase();
 
         event.setDroppedExp(0);
         event.getDrops().clear();
@@ -62,6 +74,7 @@ public class PlayerListeners implements Listener {
             Bukkit.broadcastMessage(BungeeSkywarsFFA.getPREFIX() + "§4" + player.getName() + "§c got killed by §4" + killer.getName());
             killer.sendMessage(BungeeSkywarsFFA.getPREFIX() + "§aYou killed §2" + player.getName() + "§a!");
             killer.setHealth(killer.getMaxHealth());
+            database.addKill(killer.getUniqueId());
         } else {
             Bukkit.broadcastMessage(BungeeSkywarsFFA.getPREFIX() + "§4" + player.getName() + "§c died.");
         }
@@ -72,6 +85,7 @@ public class PlayerListeners implements Listener {
         }
 
         player.sendMessage(BungeeSkywarsFFA.getPREFIX() + "§4You died.");
+        database.addDeath(player.getUniqueId());
     }
 
     @EventHandler

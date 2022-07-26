@@ -1,8 +1,10 @@
 package me.lara.bungeeskywarsffa;
 
+import me.lara.bungeeskywarsffa.commands.CommandStats;
 import me.lara.bungeeskywarsffa.commands.SetupCommandExecutor;
 import me.lara.bungeeskywarsffa.listeners.PlayerListeners;
 import me.lara.bungeeskywarsffa.listeners.WorldListeners;
+import me.lara.bungeeskywarsffa.utils.Database;
 import me.lara.bungeeskywarsffa.utils.ItemBuilder;
 import me.lara.bungeeskywarsffa.utils.LocationUtils;
 import org.bukkit.Bukkit;
@@ -13,6 +15,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
@@ -21,6 +24,7 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
 
     private static BungeeSkywarsFFA instance;
     private static String PREFIX;
+    public Database database;
 
     public static String getPREFIX() {
         return PREFIX;
@@ -39,9 +43,20 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
         pluginManager.registerEvents(new WorldListeners(), this);
 
         Objects.requireNonNull(getCommand("setup")).setExecutor(new SetupCommandExecutor());
+        Objects.requireNonNull(getCommand("stats")).setExecutor(new CommandStats());
+
+        getConfig().addDefault("MYSQL.HOSTNAME", "localhost");
+        getConfig().addDefault("MYSQL.USERNAME", "root");
+        getConfig().addDefault("MYSQL.PASSWORD", "");
+        getConfig().addDefault("MYSQL.DATABASE", "SkyWarsFFA");
+        getConfig().addDefault("MYSQL.PORT", 3306);
 
         getConfig().options().copyDefaults(true);
         saveConfig();
+
+        database = new Database();
+        database.createTable();
+
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -51,7 +66,7 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
                     long breakTime = System.currentTimeMillis() - WorldListeners.blockExistTimeList.get(block);
                     if (breakTime > 1000 * 5) {
 
-                        if(WorldListeners.blockExistTimePlayerList.containsKey(block)){
+                        if (WorldListeners.blockExistTimePlayerList.containsKey(block)) {
                             final Player player = WorldListeners.blockExistTimePlayerList.get(block).getPlayer();
                             assert player != null;
 
@@ -75,7 +90,19 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
                 }
             }
         }.runTaskTimer(getInstance(), 5, 5);
-
         PREFIX = "§7[§3Sky§bWars§3FFA§7] ";
+    }
+
+    @Override
+    public void onDisable() {
+        try {
+            getDatabase().close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Database getDatabase() {
+        return database;
     }
 }

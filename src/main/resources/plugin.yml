@@ -5,3 +5,4 @@ api-version: 1.19
 authors: [ Timeox2k ]
 commands:
   setup:
+  stats:
