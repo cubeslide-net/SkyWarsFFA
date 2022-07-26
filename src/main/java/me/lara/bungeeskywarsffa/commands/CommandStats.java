@@ -27,7 +27,11 @@ public class CommandStats implements CommandExecutor {
 
             player.sendMessage("§9Kills§8: §3" + kills);
             player.sendMessage("§9Deaths§8: §3" + deaths);
-            player.sendMessage("§9KD§8: §3" + (double) (kills / deaths));
+            if(kills == 0 && deaths == 0) {
+                player.sendMessage("§9KD§8: §30.0");
+            } else {
+                player.sendMessage("§9KD§8: §3" + (double) (kills / deaths));
+            }
             player.sendMessage("§7§m--------§r§6Stats of " + player.getName() + "§7§m--------");
         } else {
 
@@ -46,7 +50,12 @@ public class CommandStats implements CommandExecutor {
 
             player.sendMessage("§9Kills§8: §3" + kills);
             player.sendMessage("§9Deaths§8: §3" + deaths);
-            player.sendMessage("§9KD§8: §3" + (double) (kills / deaths));
+
+            if(kills == 0 && deaths == 0) {
+                player.sendMessage("§9KD§8: §30.0");
+            } else {
+                player.sendMessage("§9KD§8: §3" + (double) (kills / deaths));
+            }
             player.sendMessage("§7§m--------§r§6Stats of " + target.getName() + "§7§m--------");
 
         }
