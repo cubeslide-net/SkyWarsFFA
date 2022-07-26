@@ -67,6 +67,10 @@ public class PlayerListeners implements Listener {
         }
 
 
+        for(Block block :  WorldListeners.blockExistTimeList.keySet()) {
+            WorldListeners.blockExistTimePlayerList.remove(block);
+        }
+
         player.sendMessage(BungeeSkywarsFFA.getPREFIX() + "§4You died.");
     }
 

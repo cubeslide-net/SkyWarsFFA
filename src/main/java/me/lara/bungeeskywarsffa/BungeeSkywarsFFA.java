@@ -7,7 +7,6 @@ import me.lara.bungeeskywarsffa.utils.ItemBuilder;
 import me.lara.bungeeskywarsffa.utils.LocationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -49,28 +48,26 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
                 Optional<Block> firstKey = WorldListeners.blockExistTimeList.keySet().stream().findFirst();
                 if (firstKey.isPresent()) {
                     Block block = firstKey.get();
-                    long breakTime = System.currentTimeMillis() -  WorldListeners.blockExistTimeList.get(block);
-                    if(breakTime > 1000 * 5) {
+                    long breakTime = System.currentTimeMillis() - WorldListeners.blockExistTimeList.get(block);
+                    if (breakTime > 1000 * 5) {
 
-                        if(!WorldListeners.blockExistTimePlayerList.containsKey(block)) return;
+                        if(WorldListeners.blockExistTimePlayerList.containsKey(block)){
+                            final Player player = WorldListeners.blockExistTimePlayerList.get(block).getPlayer();
+                            assert player != null;
 
-                        final Player player = WorldListeners.blockExistTimePlayerList.get(block).getPlayer();
-                        assert player != null;
 
+                            //Super quick but dirty check to not give dead Players their Items back after death. (Duplication Fix)
+                            if (LocationUtils.spawnLocation() != null && player.getLocation().getY() < Objects.requireNonNull(LocationUtils.spawnLocation()).getY()) {
+                                if (block.getType() == Material.COBBLESTONE) {
+                                    player.getInventory().addItem(ItemBuilder.buildItem(Material.COBBLESTONE, 1, "§eCobblestone", Arrays.asList("", "§eCobblestone"), false));
+                                } else if (block.getType() == Material.COBWEB) {
+                                    player.getInventory().addItem(ItemBuilder.buildItem(Material.COBWEB, 1, "§3Web", Arrays.asList("", "§3§lWorld wide Web."), false));
+                                }
 
-                        //Super quick but dirty check to not give dead Players their Items back after death. (Duplication Fix)
-                        if(LocationUtils.spawnLocation() != null && player.getLocation().getY() < Objects.requireNonNull(LocationUtils.spawnLocation()).getY()) {
-                            if(block.getType() == Material.COBBLESTONE) {
-                                player.getInventory().addItem(ItemBuilder.buildItem(Material.COBBLESTONE, 1, "§eCobblestone", Arrays.asList("", "§eCobblestone"), false));
-                            } else if(block.getType() == Material.COBWEB) {
-                                player.getInventory().addItem(ItemBuilder.buildItem(Material.COBWEB, 1, "§3Web", Arrays.asList("", "§3§lWorld wide Web."), false));
+                                player.updateInventory();
                             }
-
-                            player.updateInventory();
+                            WorldListeners.blockExistTimePlayerList.remove(block);
                         }
-
-
-                        WorldListeners.blockExistTimePlayerList.remove(block);
                         WorldListeners.blockExistTimeList.remove(block);
                         Objects.requireNonNull(Bukkit.getWorld(block.getWorld().getName())).getBlockAt(block.getLocation()).setType(Material.AIR);
                     }
