@@ -51,6 +51,9 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
                     Block block = firstKey.get();
                     long breakTime = System.currentTimeMillis() -  WorldListeners.blockExistTimeList.get(block);
                     if(breakTime > 1000 * 5) {
+
+                        if(!WorldListeners.blockExistTimePlayerList.containsKey(block)) return;
+
                         final Player player = WorldListeners.blockExistTimePlayerList.get(block).getPlayer();
                         assert player != null;
 
@@ -65,7 +68,6 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
 
                             player.updateInventory();
                         }
-
 
 
                         WorldListeners.blockExistTimePlayerList.remove(block);
