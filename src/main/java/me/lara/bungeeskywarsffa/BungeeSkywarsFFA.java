@@ -4,6 +4,7 @@ import me.lara.bungeeskywarsffa.commands.SetupCommandExecutor;
 import me.lara.bungeeskywarsffa.listeners.PlayerListeners;
 import me.lara.bungeeskywarsffa.listeners.WorldListeners;
 import me.lara.bungeeskywarsffa.utils.ItemBuilder;
+import me.lara.bungeeskywarsffa.utils.LocationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
@@ -52,13 +53,20 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
                     if(breakTime > 1000 * 5) {
                         final Player player = WorldListeners.blockExistTimePlayerList.get(block).getPlayer();
                         assert player != null;
-                        if(block.getType() == Material.COBBLESTONE) {
-                            player.getInventory().addItem(ItemBuilder.buildItem(Material.COBBLESTONE, 1, "§eCobblestone", Arrays.asList("", "§eCobblestone"), false));
-                        } else if(block.getType() == Material.COBWEB) {
-                            player.getInventory().addItem(ItemBuilder.buildItem(Material.COBWEB, 1, "§3Web", Arrays.asList("", "§3§lWorld wide Web."), false));
+
+
+                        //Super quick but dirty check to not give dead Players their Items back after death. (Duplication Fix)
+                        if(LocationUtils.spawnLocation() != null && player.getLocation().getY() < Objects.requireNonNull(LocationUtils.spawnLocation()).getY()) {
+                            if(block.getType() == Material.COBBLESTONE) {
+                                player.getInventory().addItem(ItemBuilder.buildItem(Material.COBBLESTONE, 1, "§eCobblestone", Arrays.asList("", "§eCobblestone"), false));
+                            } else if(block.getType() == Material.COBWEB) {
+                                player.getInventory().addItem(ItemBuilder.buildItem(Material.COBWEB, 1, "§3Web", Arrays.asList("", "§3§lWorld wide Web."), false));
+                            }
+
+                            player.updateInventory();
                         }
 
-                        player.updateInventory();
+
 
                         WorldListeners.blockExistTimePlayerList.remove(block);
                         WorldListeners.blockExistTimeList.remove(block);
