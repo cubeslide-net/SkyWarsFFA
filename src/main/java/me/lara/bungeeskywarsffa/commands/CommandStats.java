@@ -9,6 +9,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.text.DecimalFormat;
 import java.util.UUID;
 
 public class CommandStats implements CommandExecutor {
@@ -22,24 +23,17 @@ public class CommandStats implements CommandExecutor {
             final UUID uuid = player.getUniqueId();
             player.sendMessage("§7§m--------§r§6Stats of " + player.getName() + "§7§m--------");
 
-            final int kills = database.getKills(uuid);
-            final int deaths = database.getDeaths(uuid);
+            final double kills = database.getKills(player.getUniqueId());
+            final double deaths = database.getDeaths(player.getUniqueId());
 
-            double kdr = 0;
+            double kdr = (double)kills/(double)deaths;
 
-            if(kills != 0 && deaths == 0) {
-                kdr = (double) kills;
-            } else if(deaths == 0 && kills == 0) {
-                kdr = 0;
-            } else if(deaths != 0 && kills == 0) {
-                kdr = 0;
-            } else {
-                kdr = (double) (kills / deaths);
-            }
+            DecimalFormat decimalFormat = new DecimalFormat("#.##");
+
 
             player.sendMessage("§9Kills§8: §3" + kills);
             player.sendMessage("§9Deaths§8: §3" + deaths);
-            player.sendMessage("§9KD§8: §3" + kdr);
+            player.sendMessage("§9KD§8: §3" + decimalFormat.format(kdr));
 
             player.sendMessage("§7§m--------§r§6Stats of " + player.getName() + "§7§m--------");
         } else {
@@ -54,24 +48,16 @@ public class CommandStats implements CommandExecutor {
 
             player.sendMessage("§7§m--------§r§6Stats of " + target.getName() + "§7§m--------");
 
-            final int kills = database.getKills(target.getUniqueId());
-            final int deaths = database.getDeaths(target.getUniqueId());
+            final double kills = database.getKills(target.getUniqueId());
+            final double deaths = database.getDeaths(target.getUniqueId());
 
-            double kdr = 0;
+            double kdr = (double)kills/(double)deaths;
 
-            if(kills != 0 && deaths == 0) {
-                kdr = (double) kills;
-            } else if(deaths == 0 && kills == 0) {
-                kdr = 0;
-            } else if(deaths != 0 && kills == 0) {
-                kdr = 0;
-            } else {
-                kdr = (double) (kills / deaths);
-            }
+            DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
             player.sendMessage("§9Kills§8: §3" + kills);
             player.sendMessage("§9Deaths§8: §3" + deaths);
-            player.sendMessage("§9KD§8: §3" + kdr);
+            player.sendMessage("§9KD§8: §3" + decimalFormat.format(kdr));
 
             player.sendMessage("§7§m--------§r§6Stats of " + target.getName() + "§7§m--------");
 
