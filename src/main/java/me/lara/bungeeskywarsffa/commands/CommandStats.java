@@ -13,6 +13,7 @@ import java.text.DecimalFormat;
 import java.util.UUID;
 
 public class CommandStats implements CommandExecutor {
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 

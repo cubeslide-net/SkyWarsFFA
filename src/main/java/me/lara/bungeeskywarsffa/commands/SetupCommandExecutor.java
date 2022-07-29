@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import java.util.Objects;
 
 public class SetupCommandExecutor implements CommandExecutor {
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
