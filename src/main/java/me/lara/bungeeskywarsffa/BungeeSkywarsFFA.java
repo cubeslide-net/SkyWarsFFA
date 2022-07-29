@@ -22,8 +22,11 @@ import java.util.Optional;
 
 public final class BungeeSkywarsFFA extends JavaPlugin {
 
+	
+    private static final String PREFIX = "§7[§3Sky§bWars§3FFA§7] ";
+
     private static BungeeSkywarsFFA instance;
-    private static String PREFIX;
+	
     public Database database;
 
     public static String getPREFIX() {
@@ -90,7 +93,6 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
                 }
             }
         }.runTaskTimer(getInstance(), 5, 5);
-        PREFIX = "§7[§3Sky§bWars§3FFA§7] ";
     }
 
     @Override
