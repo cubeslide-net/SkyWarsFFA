@@ -15,7 +15,7 @@ public class LocationUtils {
         if(!config.isSet("Spawn.world")) {
             return null;
         }
-        return new Location(Bukkit.getWorld(Objects.requireNonNull(config.getString("Spawn.world"))), config.getDouble("Spawn.X"), config.getDouble("Spawn.Y"), config.getDouble("Spawn.Z"), (float) config.getDouble("Spawn.YAW"), (float) config.getDouble("Spawn.PITCH"));
+        return new Location(Bukkit.getWorld(Objects.requireNonNull(config.getString("Spawn.world"))), config.getDouble("Spawn.X"), config.getDouble("Spawn.Y") + 0.5, config.getDouble("Spawn.Z"), (float) config.getDouble("Spawn.YAW"), (float) config.getDouble("Spawn.PITCH"));
     }
 
     public static double buildHeight() {
