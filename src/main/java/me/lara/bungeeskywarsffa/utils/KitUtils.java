@@ -16,7 +16,7 @@ public class KitUtils {
         player.getInventory().setLeggings(ItemBuilder.buildItem(Material.DIAMOND_LEGGINGS, 1, "§c§lBasic Hot-pants", Arrays.asList("", "§cHot-pants of the Basic-Kit."), true));
         player.getInventory().setBoots(ItemBuilder.buildItem(Material.DIAMOND_BOOTS, 1, "§c§lBasic Boots", Arrays.asList("", "§cBoots of the Basic-Kit."), true));
 
-        player.getInventory().setItem(0, ItemBuilder.buildItem(Material.NETHERITE_SWORD, 1, "§3§lNetherite Sword", Arrays.asList(""), true));
+        player.getInventory().setItem(0, ItemBuilder.buildItem(Material.NETHERITE_SWORD, 1, "§3§lDiamond Sword", Arrays.asList(""), true));
         player.getInventory().setItem(1, ItemBuilder.buildItem(Material.COBWEB, 16, "§3Web", Arrays.asList("", "§3§lWorld wide Web."), false));
         player.getInventory().setItem(2, ItemBuilder.buildItem(Material.GOLDEN_APPLE, 3, "§6§lGolden Apple", Arrays.asList(""), false));
         player.getInventory().setItem(8, ItemBuilder.buildItem(Material.ENDER_PEARL, 2, "§5§lEnderpearl", Arrays.asList(""), false));
