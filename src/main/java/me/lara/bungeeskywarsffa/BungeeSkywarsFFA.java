@@ -15,6 +15,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.sql.Array;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Objects;
@@ -53,6 +54,8 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
         getConfig().addDefault("MYSQL.PASSWORD", "");
         getConfig().addDefault("MYSQL.DATABASE", "SkyWarsFFA");
         getConfig().addDefault("MYSQL.PORT", 3306);
+
+        getConfig().addDefault("Messages.stats", Arrays.asList("&7&m--------&r&6Stats of %player% §&§m--------", "&eKills&8: &3%kills%", "&eDeaths&8: &3%deaths%", "&eKD&8: &3%kd%", "&7&m--------&r&6Stats of %player% §&§m--------"));
 
         getConfig().options().copyDefaults(true);
         saveConfig();

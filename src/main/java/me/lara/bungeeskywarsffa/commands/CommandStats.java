@@ -10,6 +10,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.text.DecimalFormat;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class CommandStats implements CommandExecutor {
@@ -21,21 +23,20 @@ public class CommandStats implements CommandExecutor {
         final Player player = (Player) sender;
         if (args.length == 0) {
             final UUID uuid = player.getUniqueId();
-            player.sendMessage("§7§m--------§r§6Stats of " + player.getName() + "§7§m--------");
-
-            final double kills = database.getKills(player.getUniqueId());
-            final double deaths = database.getDeaths(player.getUniqueId());
+            final double kills = database.getKills(uuid);
+            final double deaths = database.getDeaths(uuid);
 
             double kdr = kills / deaths;
 
             DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
+            List<String> messages = BungeeSkywarsFFA.getInstance().getConfig().getStringList("Messages.stats");
 
-            player.sendMessage("§9Kills§8: §3" + kills);
-            player.sendMessage("§9Deaths§8: §3" + deaths);
-            player.sendMessage("§9KD§8: §3" + decimalFormat.format(kdr));
+            for (String line : messages) {
+                String message = line.replace("&", "§").replace("%player%", player.getName()).replace("%kills%", String.valueOf(kills)).replace("%deaths%", String.valueOf(deaths)).replace("%kd%", decimalFormat.format(kdr));
 
-            player.sendMessage("§7§m--------§r§6Stats of " + player.getName() + "§7§m--------");
+                player.sendMessage(message);
+            }
         } else {
 
             OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
@@ -46,20 +47,21 @@ public class CommandStats implements CommandExecutor {
                 return true;
             }
 
-            player.sendMessage("§7§m--------§r§6Stats of " + target.getName() + "§7§m--------");
 
-            final double kills = database.getKills(target.getUniqueId());
-            final double deaths = database.getDeaths(target.getUniqueId());
+            final UUID targetUUID = target.getUniqueId();
+            final double kills = database.getKills(targetUUID);
+            final double deaths = database.getDeaths(targetUUID);
 
-            double kdr = (double)kills/(double)deaths;
+            double kdr = kills / deaths;
 
             DecimalFormat decimalFormat = new DecimalFormat("#.##");
+            List<String> messages = BungeeSkywarsFFA.getInstance().getConfig().getStringList("Messages.stats");
 
-            player.sendMessage("§9Kills§8: §3" + kills);
-            player.sendMessage("§9Deaths§8: §3" + deaths);
-            player.sendMessage("§9KD§8: §3" + decimalFormat.format(kdr));
+            for (String line : messages) {
+                String message = line.replace("&", "§").replace("%player%", Objects.requireNonNull(target.getName())).replace("%kills%", String.valueOf(kills)).replace("%deaths%", String.valueOf(deaths)).replace("%kd%", decimalFormat.format(kdr));
 
-            player.sendMessage("§7§m--------§r§6Stats of " + target.getName() + "§7§m--------");
+                player.sendMessage(message);
+            }
 
         }
 
