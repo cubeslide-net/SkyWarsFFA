@@ -55,7 +55,7 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
         getConfig().addDefault("MYSQL.DATABASE", "SkyWarsFFA");
         getConfig().addDefault("MYSQL.PORT", 3306);
 
-        getConfig().addDefault("Messages.stats", Arrays.asList("&7&m--------&r&6Stats of %player% §&§m--------", "&eKills&8: &3%kills%", "&eDeaths&8: &3%deaths%", "&eKD&8: &3%kd%", "&7&m--------&r&6Stats of %player% §&§m--------"));
+        getConfig().addDefault("Messages.stats", Arrays.asList("&7&m--------&r&6Stats of %player%&7§m--------", "&eKills&8: &3%kills%", "&eDeaths&8: &3%deaths%", "&eKD&8: &3%kd%", "&7&m--------&r&6Stats of %player%&7§m--------"));
 
         getConfig().options().copyDefaults(true);
         saveConfig();
