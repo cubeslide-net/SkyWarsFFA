@@ -26,7 +26,7 @@ public class CommandStats implements CommandExecutor {
             final double kills = database.getKills(player.getUniqueId());
             final double deaths = database.getDeaths(player.getUniqueId());
 
-            double kdr = (double)kills/(double)deaths;
+            double kdr = kills / deaths;
 
             DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
