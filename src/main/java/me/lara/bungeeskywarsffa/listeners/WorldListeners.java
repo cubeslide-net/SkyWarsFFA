@@ -9,7 +9,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class WorldListeners implements Listener {

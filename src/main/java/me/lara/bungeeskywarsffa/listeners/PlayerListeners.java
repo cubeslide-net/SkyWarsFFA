@@ -16,8 +16,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
-
-import javax.xml.crypto.Data;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -121,7 +119,6 @@ public class PlayerListeners implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
-        final Player player = event.getPlayer();
 
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             Block block = event.getClickedBlock();
