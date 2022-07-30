@@ -16,6 +16,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import java.util.Objects;
 import java.util.UUID;
 
@@ -66,7 +68,13 @@ public class PlayerListeners implements Listener {
         event.setDroppedExp(0);
         event.getDrops().clear();
         event.setDeathMessage("");
-        player.spigot().respawn();
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                player.spigot().respawn();
+            }
+        }.runTaskLater(BungeeSkywarsFFA.getInstance(), 20 * 5);
 
         if(killer instanceof Player && killer != player) {
             Bukkit.broadcastMessage(BungeeSkywarsFFA.getPREFIX() + "§4" + player.getName() + "§c got killed by §4" + killer.getName());
@@ -102,11 +110,23 @@ public class PlayerListeners implements Listener {
         final Player player = event.getPlayer();
         final BungeeSkywarsFFA bungeeSkywarsFFA = BungeeSkywarsFFA.getInstance();
 
-        if(bungeeSkywarsFFA.getConfig().isSet("Dead-height.Y") && player.getLocation().getY() <bungeeSkywarsFFA.getConfig().getDouble("Dead-height.Y")) {
+
+        if(bungeeSkywarsFFA.getConfig().isSet("Dead-height.Y") && player.getLocation().getY() < bungeeSkywarsFFA.getConfig().getDouble("Dead-height.Y")) {
 
             if(player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) return;
+            final Database database = BungeeSkywarsFFA.getInstance().getDatabase();
 
-            player.setHealth(0);
+            player.getInventory().clear();
+            player.teleport(Objects.requireNonNull(LocationUtils.spawnLocation()));
+
+            if(!WorldListeners.blockExistTimeList.isEmpty()) {
+                for (Block block : WorldListeners.blockExistTimeList.keySet()) {
+                    WorldListeners.blockExistTimePlayerList.remove(block);
+                }
+            }
+
+            player.sendMessage(BungeeSkywarsFFA.getPREFIX() + "§4You died.");
+            database.addDeath(player.getUniqueId());
         }
 
         if (LocationUtils.spawnLocation() == null || !player.getInventory().isEmpty()) return;
