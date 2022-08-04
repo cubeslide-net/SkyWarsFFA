@@ -21,16 +21,16 @@ public class CommandStats implements CommandExecutor {
         final Database database = BungeeSkywarsFFA.getInstance().getDatabase();
 
         final Player player = (Player) sender;
+
+        final DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        final List<String> messages = BungeeSkywarsFFA.getInstance().getConfig().getStringList("Messages.stats");
+
         if (args.length == 0) {
             final UUID uuid = player.getUniqueId();
             final double kills = database.getKills(uuid);
             final double deaths = database.getDeaths(uuid);
 
             double kdr = kills / deaths;
-
-            DecimalFormat decimalFormat = new DecimalFormat("#.##");
-
-            List<String> messages = BungeeSkywarsFFA.getInstance().getConfig().getStringList("Messages.stats");
 
             for (String line : messages) {
                 String message = line.replace("&", "§").replace("%player%", player.getName()).replace("%kills%", String.valueOf(kills)).replace("%deaths%", String.valueOf(deaths)).replace("%kd%", decimalFormat.format(kdr));
@@ -41,7 +41,6 @@ public class CommandStats implements CommandExecutor {
 
             OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
 
-            assert target != null;
             if (!database.doesPlayerExistByUUID(target.getUniqueId())) {
                 player.sendMessage(BungeeSkywarsFFA.getPREFIX() + "§cThis Player has not Played yet!");
                 return true;
@@ -54,12 +53,8 @@ public class CommandStats implements CommandExecutor {
 
             double kdr = kills / deaths;
 
-            DecimalFormat decimalFormat = new DecimalFormat("#.##");
-            List<String> messages = BungeeSkywarsFFA.getInstance().getConfig().getStringList("Messages.stats");
-
             for (String line : messages) {
                 String message = line.replace("&", "§").replace("%player%", Objects.requireNonNull(target.getName())).replace("%kills%", String.valueOf(kills)).replace("%deaths%", String.valueOf(deaths)).replace("%kd%", decimalFormat.format(kdr));
-
                 player.sendMessage(message);
             }
 

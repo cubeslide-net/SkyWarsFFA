@@ -9,8 +9,8 @@ import java.util.List;
 public class ItemBuilder {
 
     public static ItemStack buildItem(Material material, int count, String displayName, List<String> lore, boolean unbreakable) {
-        ItemStack itemStack = new ItemStack(material, count);
-        ItemMeta itemMeta = itemStack.getItemMeta();
+        final ItemStack itemStack = new ItemStack(material, count);
+        final ItemMeta itemMeta = itemStack.getItemMeta();
         assert itemMeta != null;
         itemMeta.setDisplayName(displayName);
         itemMeta.setLore(lore);
