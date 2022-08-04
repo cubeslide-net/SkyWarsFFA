@@ -1,5 +1,9 @@
 package me.lara.bungeeskywarsffa.commands;
 
+import java.text.DecimalFormat;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 import me.lara.bungeeskywarsffa.BungeeSkywarsFFA;
 import me.lara.bungeeskywarsffa.utils.Database;
 import org.bukkit.Bukkit;
@@ -9,58 +13,58 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.text.DecimalFormat;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
-
 public class CommandStats implements CommandExecutor {
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        final Database database = BungeeSkywarsFFA.getInstance().getDatabase();
+  @Override
+  public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        final Player player = (Player) sender;
+    final Database database = BungeeSkywarsFFA.getInstance().getDatabase();
 
-        final DecimalFormat decimalFormat = new DecimalFormat("#.##");
-        final List<String> messages = BungeeSkywarsFFA.getInstance().getConfig().getStringList("Messages.stats");
+    final Player player = (Player) sender;
 
-        if (args.length == 0) {
-            final UUID uuid = player.getUniqueId();
-            final double kills = database.getKills(uuid);
-            final double deaths = database.getDeaths(uuid);
+    final DecimalFormat decimalFormat = new DecimalFormat("#.##");
+    final List<String> messages = BungeeSkywarsFFA.getInstance().getConfig()
+        .getStringList("Messages.stats");
 
-            double kdr = kills / deaths;
+    if (args.length == 0) {
+      final UUID uuid = player.getUniqueId();
+      final double kills = database.getKills(uuid);
+      final double deaths = database.getDeaths(uuid);
 
-            for (String line : messages) {
-                String message = line.replace("&", "§").replace("%player%", player.getName()).replace("%kills%", String.valueOf(kills)).replace("%deaths%", String.valueOf(deaths)).replace("%kd%", decimalFormat.format(kdr));
+      double kdr = kills / deaths;
 
-                player.sendMessage(message);
-            }
-        } else {
+      for (String line : messages) {
+        String message = line.replace("&", "§").replace("%player%", player.getName())
+            .replace("%kills%", String.valueOf(kills)).replace("%deaths%", String.valueOf(deaths))
+            .replace("%kd%", decimalFormat.format(kdr));
 
-            OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
+        player.sendMessage(message);
+      }
+    } else {
 
-            if (!database.doesPlayerExistByUUID(target.getUniqueId())) {
-                player.sendMessage(BungeeSkywarsFFA.getPREFIX() + "§cThis Player has not Played yet!");
-                return true;
-            }
+      OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
 
-
-            final UUID targetUUID = target.getUniqueId();
-            final double kills = database.getKills(targetUUID);
-            final double deaths = database.getDeaths(targetUUID);
-
-            double kdr = kills / deaths;
-
-            for (String line : messages) {
-                String message = line.replace("&", "§").replace("%player%", Objects.requireNonNull(target.getName())).replace("%kills%", String.valueOf(kills)).replace("%deaths%", String.valueOf(deaths)).replace("%kd%", decimalFormat.format(kdr));
-                player.sendMessage(message);
-            }
-
-        }
-
-
+      if (!database.doesPlayerExistByUUID(target.getUniqueId())) {
+        player.sendMessage(BungeeSkywarsFFA.getPrefix() + "§cThis Player has not Played yet!");
         return true;
+      }
+
+      final UUID targetUUID = target.getUniqueId();
+      final double kills = database.getKills(targetUUID);
+      final double deaths = database.getDeaths(targetUUID);
+
+      double kdr = kills / deaths;
+
+      for (String line : messages) {
+        String message = line.replace("&", "§")
+            .replace("%player%", Objects.requireNonNull(target.getName()))
+            .replace("%kills%", String.valueOf(kills)).replace("%deaths%", String.valueOf(deaths))
+            .replace("%kd%", decimalFormat.format(kdr));
+        player.sendMessage(message);
+      }
+
     }
+
+    return true;
+  }
 }
