@@ -44,7 +44,7 @@ public class PlayerListeners implements Listener {
             database.createNewUser(uuid);
         }
         for(Player all : Bukkit.getOnlinePlayers()) {
-            BungeeSkywarsFFA.getInstance().sendScoreboard(all, true);
+            BungeeSkywarsFFA.getInstance().sendScoreboard(all);
         }
     }
 
@@ -114,7 +114,7 @@ public class PlayerListeners implements Listener {
 
         database.addDeath(player.getUniqueId());
         for(Player all : Bukkit.getOnlinePlayers()) {
-            BungeeSkywarsFFA.getInstance().sendScoreboard(all, false);
+            BungeeSkywarsFFA.getInstance().sendScoreboard(all);
         }
     }
 
@@ -151,6 +151,10 @@ public class PlayerListeners implements Listener {
 
             player.sendMessage(BungeeSkywarsFFA.getPREFIX() + "§4You died.");
             database.addDeath(player.getUniqueId());
+
+            for(Player all : Bukkit.getOnlinePlayers()) {
+                BungeeSkywarsFFA.getInstance().sendScoreboard(all);
+            }
 
             final UUID uuid = player.getUniqueId();
             if(killStreakCount.containsKey(uuid)) {
