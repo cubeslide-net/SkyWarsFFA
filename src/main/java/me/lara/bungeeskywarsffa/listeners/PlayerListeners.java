@@ -18,6 +18,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -59,6 +60,8 @@ public class PlayerListeners implements Listener {
         }
     }
 
+    public static final HashMap<UUID, Integer> killStreakCount = new HashMap<>();
+
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
         final Player player = event.getEntity();
@@ -81,6 +84,14 @@ public class PlayerListeners implements Listener {
             killer.sendMessage(BungeeSkywarsFFA.getPREFIX() + "§aYou killed §2" + player.getName() + "§a!");
             killer.setHealth(killer.getMaxHealth());
             database.addKill(killer.getUniqueId());
+
+            final UUID killerUUID = killer.getUniqueId();
+            if(killStreakCount.containsKey(killerUUID)) {
+                killStreakCount.put(killerUUID, killStreakCount.get(killerUUID)+1);
+            } else {
+                killStreakCount.put(killerUUID, 1);
+            }
+
         } else {
             Bukkit.broadcastMessage(BungeeSkywarsFFA.getPREFIX() + "§4" + player.getName() + "§c died.");
         }
@@ -91,6 +102,12 @@ public class PlayerListeners implements Listener {
         }
 
         player.sendMessage(BungeeSkywarsFFA.getPREFIX() + "§4You died.");
+
+        final UUID uuid = player.getUniqueId();
+        if(killStreakCount.containsKey(uuid)) {
+            killStreakCount.remove(uuid);
+        }
+
         database.addDeath(player.getUniqueId());
     }
 
@@ -127,6 +144,12 @@ public class PlayerListeners implements Listener {
 
             player.sendMessage(BungeeSkywarsFFA.getPREFIX() + "§4You died.");
             database.addDeath(player.getUniqueId());
+
+            final UUID uuid = player.getUniqueId();
+            if(killStreakCount.containsKey(uuid)) {
+                killStreakCount.remove(uuid);
+            }
+
         }
 
         if (LocationUtils.spawnLocation() == null || !player.getInventory().isEmpty()) return;

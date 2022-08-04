@@ -17,7 +17,7 @@ public class Database {
     private final Connection connection;
 
     public Database() {
-        HikariConfig hikariConfig = new HikariConfig();
+        final HikariConfig hikariConfig = new HikariConfig();
         final Configuration spigotConfig = BungeeSkywarsFFA.getInstance().getConfig();
         hikariConfig.setJdbcUrl("jdbc:mysql://" + spigotConfig.getString("MYSQL.HOSTNAME") + ":" + spigotConfig.getInt("MYSQL.PORT") + "/" + spigotConfig.getString("MYSQL.DATABASE") + "?autoReconnect=true");
         hikariConfig.setUsername(spigotConfig.getString("MYSQL.USERNAME"));

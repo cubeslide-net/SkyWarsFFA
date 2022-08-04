@@ -6,3 +6,5 @@ authors: [ Timeox2k ]
 commands:
   setup:
   stats:
+  killstreak:
+    aliases: [ks, streak, kills]
