@@ -57,7 +57,11 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
         getConfig().addDefault("MYSQL.DATABASE", "SkyWarsFFA");
         getConfig().addDefault("MYSQL.PORT", 3306);
 
+        getConfig().addDefault("Gameplay.limitCobweb", true);
+        getConfig().addDefault("Gameplay.cobWebPlaceDelayTimeSeconds", 3);
+
         getConfig().addDefault("Messages.stats", Arrays.asList("&7&m--------&r&6Stats of %player%&7§m--------", "&eKills&8: &3%kills%", "&eDeaths&8: &3%deaths%", "&eKD&8: &3%kd%", "&7&m--------&r&6Stats of %player%&7§m--------"));
+        getConfig().addDefault("Messages.cobWebLimit", "&cPlease wait before using Cobwebs again!");
 
         getConfig().options().copyDefaults(true);
         saveConfig();
@@ -107,6 +111,10 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String getStringFromPath(String path) {
+        return getConfig().getString(path).replace("&", "§");
     }
 
     public Database getDatabase() {
