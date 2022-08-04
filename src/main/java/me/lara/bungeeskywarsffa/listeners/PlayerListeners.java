@@ -43,7 +43,9 @@ public class PlayerListeners implements Listener {
         if(!database.doesPlayerExistByUUID(uuid)) {
             database.createNewUser(uuid);
         }
-        Bukkit.getOnlinePlayers().stream().forEach(BungeeSkywarsFFA.getInstance()::sendScoreboard);
+        for(Player all : Bukkit.getOnlinePlayers()) {
+            BungeeSkywarsFFA.getInstance().sendScoreboard(all, true);
+        }
     }
 
     @EventHandler
@@ -111,7 +113,9 @@ public class PlayerListeners implements Listener {
         }
 
         database.addDeath(player.getUniqueId());
-        Bukkit.getOnlinePlayers().stream().forEach(BungeeSkywarsFFA.getInstance()::sendScoreboard);
+        for(Player all : Bukkit.getOnlinePlayers()) {
+            BungeeSkywarsFFA.getInstance().sendScoreboard(all, false);
+        }
     }
 
     @EventHandler

@@ -119,7 +119,7 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
         }
     }
 
-    public void sendScoreboard(Player player) {
+    public void sendScoreboard(Player player, boolean updateTitle) {
 
         List<String> tempList = new ArrayList<>();
         final Database database = BungeeSkywarsFFA.getInstance().getDatabase();
@@ -137,7 +137,11 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
         } else {
             board = boards.get(player);
         }
-        board.updateTitle(getStringFromPath("Scoreboard.title"));
+
+        if(updateTitle) {
+            board.updateTitle(getStringFromPath("Scoreboard.title"));
+        }
+
         board.updateLines(tempList);
     }
 
