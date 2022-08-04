@@ -46,10 +46,7 @@ public class WorldListeners implements Listener {
 
             if(!lastCobwebPlace.containsKey(uuid)) {
                 lastCobwebPlace.put(uuid, System.currentTimeMillis());
-                return;
-            }
-
-            if(System.currentTimeMillis() - lastCobwebPlace.get(uuid) > bungeeSkywarsFFA.getConfig().getLong("Gameplay.cobWebPlaceDelayTimeSeconds") * 1000) {
+            } else if(System.currentTimeMillis() - lastCobwebPlace.get(uuid) > bungeeSkywarsFFA.getConfig().getLong("Gameplay.cobWebPlaceDelayTimeSeconds") * 1000) {
                 lastCobwebPlace.remove(uuid);
             } else {
                 event.setCancelled(true);
