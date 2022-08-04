@@ -41,22 +41,19 @@ public class SetupCommandExecutor implements CommandExecutor {
                 config.set("Spawn.YAW", location.getYaw());
                 config.set("Spawn.PITCH", location.getPitch());
                 config.set("Spawn.world", Objects.requireNonNull(location.getWorld()).getName());
-                bungeeSkywarsFFA.saveConfig();
-                bungeeSkywarsFFA.reloadConfig();
                 player.sendMessage("§aSpawn point set.");
             } else if (args[0].equalsIgnoreCase("buildHeight")) {
                 config.set("Build-height.Y", location.getY());
-                bungeeSkywarsFFA.saveConfig();
-                bungeeSkywarsFFA.reloadConfig();
                 player.sendMessage("§aBuild-height set.");
             } else if(args[0].equalsIgnoreCase("deadHeight")) {
                 config.set("Dead-height.Y", location.getY());
-                bungeeSkywarsFFA.saveConfig();
-                bungeeSkywarsFFA.reloadConfig();
                 player.sendMessage("§aDead-height set.");
             } else {
                 sendhelp(player);
             }
+
+            bungeeSkywarsFFA.saveConfig();
+            bungeeSkywarsFFA.reloadConfig();
 
         }
 
