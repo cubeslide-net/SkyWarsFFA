@@ -1,5 +1,6 @@
 package me.lara.bungeeskywarsffa;
 
+import fr.mrmicky.fastboard.FastBoard;
 import me.lara.bungeeskywarsffa.commands.CommandStats;
 import me.lara.bungeeskywarsffa.commands.KillStreakCommand;
 import me.lara.bungeeskywarsffa.commands.SetupCommandExecutor;
@@ -17,9 +18,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 public final class BungeeSkywarsFFA extends JavaPlugin {
 
@@ -38,10 +37,13 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
         return instance;
     }
 
+    public HashMap<Player, FastBoard> boards;
+
     @Override
     public void onEnable() {
         final PluginManager pluginManager = getServer().getPluginManager();
         instance = this;
+        boards = new HashMap<>();
 
         pluginManager.registerEvents(new PlayerListeners(), this);
         pluginManager.registerEvents(new WorldListeners(), this);
@@ -62,6 +64,10 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
 
         getConfig().addDefault("Messages.stats", Arrays.asList("&7&m--------&r&6Stats of %player%&7§m--------", "&eKills&8: &3%kills%", "&eDeaths&8: &3%deaths%", "&eKD&8: &3%kd%", "&7&m--------&r&6Stats of %player%&7§m--------"));
         getConfig().addDefault("Messages.cobWebLimit", "&cPlease wait before using Cobwebs again!");
+
+
+        getConfig().addDefault("Scoreboard.title", "&b&lCubeSlide.net");
+        getConfig().addDefault("Scoreboard.lines", Arrays.asList("", "&3Kills", "&b%kills%", "", "&3Deaths", "&b%deaths%", "", "&eKillStreak", "&6%killstreak%"));
 
         getConfig().options().copyDefaults(true);
         saveConfig();
@@ -111,6 +117,32 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void sendScoreboard(Player player) {
+
+        List<String> tempList = new ArrayList<>();
+        final Database database = BungeeSkywarsFFA.getInstance().getDatabase();
+        final UUID uuid = player.getUniqueId();
+        final double kills = database.getKills(uuid);
+        final double deaths = database.getDeaths(uuid);
+
+        for(String lines : getConfig().getStringList("Scoreboard.lines")) {
+            tempList.add(lines.replace("%kills%", String.valueOf(kills)).replace("%deaths%", String.valueOf(deaths)).replace("%killstreak%", String.valueOf(PlayerListeners.killStreakCount.getOrDefault(uuid, 0))).replace("&", "§"));
+        }
+
+        FastBoard board;
+        if(!boards.containsKey(player)) {
+            board = new FastBoard(player);
+        } else {
+            board = boards.get(player);
+        }
+        board.updateTitle(getStringFromPath("Scoreboard.title"));
+        board.updateLines(tempList);
+    }
+
+    public HashMap<Player, FastBoard> getBoards() {
+        return boards;
     }
 
     public String getStringFromPath(String path) {

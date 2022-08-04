@@ -1,5 +1,6 @@
 package me.lara.bungeeskywarsffa.listeners;
 
+import fr.mrmicky.fastboard.FastBoard;
 import me.lara.bungeeskywarsffa.BungeeSkywarsFFA;
 import me.lara.bungeeskywarsffa.utils.Database;
 import me.lara.bungeeskywarsffa.utils.KitUtils;
@@ -42,6 +43,7 @@ public class PlayerListeners implements Listener {
         if(!database.doesPlayerExistByUUID(uuid)) {
             database.createNewUser(uuid);
         }
+        Bukkit.getOnlinePlayers().stream().forEach(BungeeSkywarsFFA.getInstance()::sendScoreboard);
     }
 
     @EventHandler
@@ -109,6 +111,7 @@ public class PlayerListeners implements Listener {
         }
 
         database.addDeath(player.getUniqueId());
+        Bukkit.getOnlinePlayers().stream().forEach(BungeeSkywarsFFA.getInstance()::sendScoreboard);
     }
 
     @EventHandler
@@ -184,7 +187,17 @@ public class PlayerListeners implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
+        final Player player = event.getPlayer();
+        final BungeeSkywarsFFA bungeeSkywarsFFA = BungeeSkywarsFFA.getInstance();
         event.setQuitMessage("");
+
+        FastBoard fastBoard = bungeeSkywarsFFA.getBoards().get(player);
+
+        if(fastBoard == null) return;
+
+        fastBoard.delete();
+        bungeeSkywarsFFA.getBoards().remove(player);
+
     }
 
     @EventHandler
