@@ -24,6 +24,6 @@ Installation:
     Customize the Plugin & Insert your MySQL Credentials
     Restart Again
     Type /setup (With OP Permissions)
-    Follow the Setup Instructions of the /setup Comman
+    Follow the Setup Instructions of the /setup Command
 
 Note: The Plugin only works on 1.19+ but with Plugins like OldCombatMechanics and ViaRewind, you will give 1.8 Players their old feeling back.
