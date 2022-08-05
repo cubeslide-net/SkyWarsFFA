@@ -35,7 +35,7 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
 
   @SuppressWarnings("checkstyle:Indentation")
   public Database database;
-  public HashMap<Player, FastBoard> boards;
+  public HashMap<UUID, FastBoard> boards;
 
   public static String getPrefix() {
     return PREFIX;
@@ -141,8 +141,8 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
     final List<String> tempList = new ArrayList<>();
     final Database database = BungeeSkywarsFFA.getInstance().getDatabase();
     final UUID uuid = player.getUniqueId();
-    final double kills = database.getKills(uuid);
-    final double deaths = database.getDeaths(uuid);
+    final int kills = database.getKills(uuid);
+    final int deaths = database.getDeaths(uuid);
 
     for (String lines : getConfig().getStringList("Scoreboard.lines")) {
       tempList.add(lines.replace("%kills%", String.valueOf(kills))
@@ -152,16 +152,16 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
     }
 
     FastBoard board;
-    if (!boards.containsKey(player)) {
+    if (!boards.containsKey(uuid)) {
       board = new FastBoard(player);
+      board.updateTitle(getStringFromPath("Scoreboard.title"));
     } else {
-      board = boards.get(player);
+      board = boards.get(uuid);
     }
-    board.updateTitle(getStringFromPath("Scoreboard.title"));
     board.updateLines(tempList);
   }
 
-  public HashMap<Player, FastBoard> getBoards() {
+  public HashMap<UUID, FastBoard> getBoards() {
     return boards;
   }
 

@@ -217,14 +217,15 @@ public class PlayerListeners implements Listener {
     final BungeeSkywarsFFA bungeeSkywarsFFA = BungeeSkywarsFFA.getInstance();
     event.setQuitMessage("");
 
-    FastBoard fastBoard = bungeeSkywarsFFA.getBoards().get(player);
+    final UUID uuid = player.getUniqueId();
+    FastBoard fastBoard = bungeeSkywarsFFA.getBoards().get(uuid);
 
     if (fastBoard == null) {
       return;
     }
 
     fastBoard.delete();
-    bungeeSkywarsFFA.getBoards().remove(player);
+    bungeeSkywarsFFA.getBoards().remove(uuid);
 
   }
 

@@ -7,4 +7,4 @@ commands:
   setup:
   stats:
   killstreak:
-    aliases: [ks, streak, kills]
+    aliases: [ ks, streak, kills ]
