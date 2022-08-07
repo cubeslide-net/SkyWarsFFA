@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.UUID;
 import me.lara.bungeeskywarsffa.BungeeSkywarsFFA;
+import me.lara.bungeeskywarsffa.commands.CommandSpec;
 import me.lara.bungeeskywarsffa.utils.Database;
 import me.lara.bungeeskywarsffa.utils.KitUtils;
 import me.lara.bungeeskywarsffa.utils.LocationUtils;
@@ -16,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -38,6 +40,12 @@ public class PlayerListeners implements Listener {
     final Database database = instance.getDatabase();
 
     event.setJoinMessage("");
+
+    for(Player all : Bukkit.getOnlinePlayers()) {
+      if(CommandSpec.vanished.contains(all.getUniqueId())) {
+        player.hidePlayer(all);
+      }
+    }
 
     if (LocationUtils.spawnLocation() == null) {
       player.sendMessage(
@@ -62,6 +70,11 @@ public class PlayerListeners implements Listener {
 
       if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
         event.setCancelled(true);
+      }
+
+      if(CommandSpec.vanished.contains(player.getUniqueId())) {
+        event.setCancelled(true);
+        player.sendMessage(BungeeSkywarsFFA.getPrefix() + "§cYou are not allowed to hit Players while being vanish.");
       }
 
       if (player.getLocation().getY()
@@ -97,6 +110,7 @@ public class PlayerListeners implements Listener {
           BungeeSkywarsFFA.getPrefix() + "§aYou killed §2" + player.getName() + "§a!");
       killer.setHealth(killer.getMaxHealth());
       database.addKill(killer.getUniqueId());
+      KitUtils.giveBasicKit(killer);
 
       final UUID killerUUID = killer.getUniqueId();
       if (killStreakCount.containsKey(killerUUID)) {
@@ -154,6 +168,7 @@ public class PlayerListeners implements Listener {
 
       player.getInventory().clear();
       player.teleport(Objects.requireNonNull(LocationUtils.spawnLocation()));
+      player.setHealth(20);
 
       if (!WorldListeners.blockExistTimeList.isEmpty()) {
         for (Block block : WorldListeners.blockExistTimeList.keySet()) {
@@ -162,6 +177,34 @@ public class PlayerListeners implements Listener {
       }
 
       player.sendMessage(BungeeSkywarsFFA.getPrefix() + "§4You died.");
+
+      if(lastHit.containsKey(player.getUniqueId())) {
+        final Player killer = Bukkit.getPlayer(lastHit.get(player.getUniqueId()));
+
+        if(killer == null) {
+          lastHit.remove(player.getUniqueId());
+        } else {
+          Bukkit.broadcastMessage(
+              BungeeSkywarsFFA.getPrefix() + "§4" + player.getName() + "§c got killed by §4"
+                  + killer.getName());
+          killer.sendMessage(
+              BungeeSkywarsFFA.getPrefix() + "§aYou killed §2" + player.getName() + "§a!");
+          killer.setHealth(killer.getMaxHealth());
+          database.addKill(killer.getUniqueId());
+          KitUtils.giveBasicKit(killer);
+          final UUID killerUUID = killer.getUniqueId();
+          if (killStreakCount.containsKey(killerUUID)) {
+            killStreakCount.put(killerUUID, killStreakCount.get(killerUUID) + 1);
+          } else {
+            killStreakCount.put(killerUUID, 1);
+          }
+
+          lastHit.remove(player.getUniqueId());
+        }
+
+
+      }
+
       database.addDeath(player.getUniqueId());
 
       for (Player all : Bukkit.getOnlinePlayers()) {
@@ -197,6 +240,21 @@ public class PlayerListeners implements Listener {
           || block.getType() == Material.BEACON) {
         event.setCancelled(true);
       }
+    }
+  }
+
+  private static final HashMap<UUID, UUID> lastHit = new HashMap<>();
+
+  @EventHandler
+  public void onDamage(EntityDamageByEntityEvent event) {
+    if(event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
+      final Player damager = (Player) event.getDamager();
+      final Player player = (Player) event.getEntity();
+      final UUID damagerUUID = damager.getUniqueId();
+      final UUID playerUUID = player.getUniqueId();
+
+      lastHit.put(damagerUUID, playerUUID);
+      lastHit.put(playerUUID, damagerUUID);
     }
   }
 

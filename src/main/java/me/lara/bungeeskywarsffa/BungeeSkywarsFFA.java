@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import me.lara.bungeeskywarsffa.commands.CommandSpec;
 import me.lara.bungeeskywarsffa.commands.CommandStats;
 import me.lara.bungeeskywarsffa.commands.KillStreakCommand;
 import me.lara.bungeeskywarsffa.commands.SetupCommandExecutor;
@@ -58,6 +59,7 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
     Objects.requireNonNull(getCommand("setup")).setExecutor(new SetupCommandExecutor());
     Objects.requireNonNull(getCommand("stats")).setExecutor(new CommandStats());
     Objects.requireNonNull(getCommand("killstreak")).setExecutor(new KillStreakCommand());
+    Objects.requireNonNull(getCommand("spec")).setExecutor(new CommandSpec());
 
     getConfig().addDefault("MYSQL.HOSTNAME", "localhost");
     getConfig().addDefault("MYSQL.USERNAME", "root");
