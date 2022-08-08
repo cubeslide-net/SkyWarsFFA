@@ -207,13 +207,13 @@ public class PlayerListeners implements Listener {
 
       database.addDeath(player.getUniqueId());
 
-      for (Player all : Bukkit.getOnlinePlayers()) {
-        BungeeSkywarsFFA.getInstance().sendScoreboard(all);
-      }
-
       final UUID uuid = player.getUniqueId();
       if (killStreakCount.containsKey(uuid)) {
         killStreakCount.remove(uuid);
+      }
+
+      for (Player all : Bukkit.getOnlinePlayers()) {
+        BungeeSkywarsFFA.getInstance().sendScoreboard(all);
       }
 
     }
