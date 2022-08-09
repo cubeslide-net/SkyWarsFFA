@@ -90,9 +90,7 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
     new BukkitRunnable() {
       @Override
       public void run() {
-        Optional<Block> firstKey = WorldListeners.blockExistTimeList.keySet().stream().findFirst();
-        if (firstKey.isPresent()) {
-          Block block = firstKey.get();
+        for(Block block : WorldListeners.blockExistTimeList.keySet()) {
           long breakTime =
               System.currentTimeMillis() - WorldListeners.blockExistTimeList.get(block);
           if (breakTime > 1000 * 5) {
@@ -121,7 +119,6 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
             Objects.requireNonNull(Bukkit.getWorld(block.getWorld().getName()))
                 .getBlockAt(block.getLocation()).setType(Material.AIR);
           }
-
         }
       }
     }.runTaskTimer(getInstance(), 5, 5);
