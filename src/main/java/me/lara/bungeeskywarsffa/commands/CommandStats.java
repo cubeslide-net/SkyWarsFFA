@@ -35,7 +35,7 @@ public class CommandStats implements CommandExecutor {
 
       for (String line : messages) {
         String message = line.replace("&", "§").replace("%player%", player.getName())
-            .replace("%kills%", String.valueOf(kills)).replace("%deaths%", String.valueOf(deaths))
+            .replace("%kills%", String.valueOf((int) kills)).replace("%deaths%", String.valueOf((int) deaths))
             .replace("%kd%", decimalFormat.format(kdr));
 
         player.sendMessage(message);
