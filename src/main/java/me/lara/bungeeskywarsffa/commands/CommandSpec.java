@@ -31,7 +31,7 @@ public class CommandSpec implements CommandExecutor {
         return true;
       }
 
-      Player target = Bukkit.getPlayer(args[0]);
+      final Player target = Bukkit.getPlayer(args[0]);
 
       if(target == null) {
         player.sendMessage(BungeeSkywarsFFA.getPrefix() + "§cPlayer is not Online!");
