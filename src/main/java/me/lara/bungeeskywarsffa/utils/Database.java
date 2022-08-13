@@ -95,6 +95,17 @@ public class Database {
     return -1;
   }
 
+  public void sendKeelAlivePing() {
+    try {
+      final Connection connection = getConnection();
+      final PreparedStatement preparedStatement = connection.prepareStatement(
+          "SELECT * FROM SkyWarsFFAStats;");
+      preparedStatement.executeQuery();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
   public int getDeaths(UUID uuid) {
     try {
       final Connection connection = getConnection();

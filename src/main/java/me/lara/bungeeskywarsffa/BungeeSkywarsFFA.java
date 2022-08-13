@@ -90,6 +90,10 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
     new BukkitRunnable() {
       @Override
       public void run() {
+
+
+        if(WorldListeners.blockExistTimeList.isEmpty()) return;
+
         for(Block block : WorldListeners.blockExistTimeList.keySet()) {
           long breakTime =
               System.currentTimeMillis() - WorldListeners.blockExistTimeList.get(block);
@@ -122,6 +126,16 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
         }
       }
     }.runTaskTimer(getInstance(), 5, 5);
+
+    new BukkitRunnable() {
+      @Override
+      public void run() {
+        if(Bukkit.getOnlinePlayers().size() == 0) {
+          database.sendKeelAlivePing();
+          getLogger().info("Database-KeepAlive-Ping send.");
+        }
+      }
+    }.runTaskTimer(getInstance(), 20 * 300, 20 * 300);
   }
 
   @SuppressWarnings("checkstyle:Indentation")

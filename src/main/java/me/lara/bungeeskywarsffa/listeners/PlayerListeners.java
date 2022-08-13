@@ -157,13 +157,14 @@ public class PlayerListeners implements Listener {
     final Player player = event.getPlayer();
     final BungeeSkywarsFFA bungeeSkywarsFFA = BungeeSkywarsFFA.getInstance();
 
+    if (player.getGameMode() == GameMode.CREATIVE
+        || player.getGameMode() == GameMode.SPECTATOR) {
+      return;
+    }
+
     if (bungeeSkywarsFFA.getConfig().isSet("Dead-height.Y")
         && player.getLocation().getY() < bungeeSkywarsFFA.getConfig().getDouble("Dead-height.Y")) {
 
-      if (player.getGameMode() == GameMode.CREATIVE
-          || player.getGameMode() == GameMode.SPECTATOR) {
-        return;
-      }
       final Database database = BungeeSkywarsFFA.getInstance().getDatabase();
 
       player.getInventory().clear();
