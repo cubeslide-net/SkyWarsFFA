@@ -36,7 +36,7 @@ public class CommandStats implements CommandExecutor {
       for (String line : messages) {
         String message = line.replace("&", "§").replace("%player%", player.getName())
             .replace("%kills%", String.valueOf((int) kills)).replace("%deaths%", String.valueOf((int) deaths))
-            .replace("%kd%", decimalFormat.format(kdr));
+            .replace("%kd%", decimalFormat.format(kdr)).replace("%rank%", String.valueOf(database.getRank(uuid)));
 
         player.sendMessage(message);
       }
@@ -59,7 +59,7 @@ public class CommandStats implements CommandExecutor {
         String message = line.replace("&", "§")
             .replace("%player%", Objects.requireNonNull(target.getName()))
             .replace("%kills%", String.valueOf(kills)).replace("%deaths%", String.valueOf(deaths))
-            .replace("%kd%", decimalFormat.format(kdr));
+            .replace("%kd%", decimalFormat.format(kdr)).replace("%rank%", String.valueOf(database.getRank(targetUUID)));
         player.sendMessage(message);
       }
 

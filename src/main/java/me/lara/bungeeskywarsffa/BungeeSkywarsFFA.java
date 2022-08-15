@@ -21,6 +21,7 @@ import me.lara.bungeeskywarsffa.utils.LocationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -61,27 +62,31 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
     Objects.requireNonNull(getCommand("killstreak")).setExecutor(new KillStreakCommand());
     Objects.requireNonNull(getCommand("spec")).setExecutor(new CommandSpec());
 
-    getConfig().addDefault("MYSQL.HOSTNAME", "localhost");
-    getConfig().addDefault("MYSQL.USERNAME", "root");
-    getConfig().addDefault("MYSQL.PASSWORD", "");
-    getConfig().addDefault("MYSQL.DATABASE", "SkyWarsFFA");
-    getConfig().addDefault("MYSQL.PORT", 3306);
+    final Configuration config = getConfig();
+    
+    config.addDefault("MYSQL.HOSTNAME", "localhost");
+    config.addDefault("MYSQL.USERNAME", "root");
+    config.addDefault("MYSQL.PASSWORD", "");
+    config.addDefault("MYSQL.DATABASE", "SkyWarsFFA");
+    config.addDefault("MYSQL.PORT", 3306);
 
-    getConfig().addDefault("Gameplay.limitCobweb", true);
-    getConfig().addDefault("Gameplay.cobWebPlaceDelayTimeSeconds", 3);
+    config.addDefault("Gameplay.limitCobweb", true);
+    config.addDefault("Gameplay.cobWebPlaceDelayTimeSeconds", 3);
 
-    getConfig().addDefault("Messages.stats",
-        Arrays.asList("&7&m--------&r&6Stats of %player%&7§m--------", "&eKills&8: &3%kills%",
-            "&eDeaths&8: &3%deaths%", "&eKD&8: &3%kd%",
+    config.addDefault("Messages.stats",
+        Arrays.asList("&7&m--------&r&6Stats of %player%&7§m--------",
+            "&eKills&8: &3%kills%",
+            "&eDeaths&8: &3%deaths%", "&eK/D&8: &3%kd%",
+            "&eRank&8: §7#&3%rank%",
             "&7&m--------&r&6Stats of %player%&7§m--------"));
-    getConfig().addDefault("Messages.cobWebLimit", "&cPlease wait before using Cobwebs again!");
+    config.addDefault("Messages.cobWebLimit", "&cPlease wait before using Cobwebs again!");
 
-    getConfig().addDefault("Scoreboard.title", "&b&lCubeSlide.net");
-    getConfig().addDefault("Scoreboard.lines",
+    config.addDefault("Scoreboard.title", "&b&lCubeSlide.net");
+    config.addDefault("Scoreboard.lines",
         Arrays.asList("", "&3Kills", "&b%kills%", "", "&3Deaths", "&b%deaths%", "", "&eKillStreak",
             "&6%killstreak%"));
 
-    getConfig().options().copyDefaults(true);
+    config.options().copyDefaults(true);
     saveConfig();
 
     database = new Database();
@@ -90,8 +95,6 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
     new BukkitRunnable() {
       @Override
       public void run() {
-
-
         if(WorldListeners.blockExistTimeList.isEmpty()) return;
 
         for(Block block : WorldListeners.blockExistTimeList.keySet()) {

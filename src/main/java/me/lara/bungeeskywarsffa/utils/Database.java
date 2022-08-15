@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.UUID;
 import me.lara.bungeeskywarsffa.BungeeSkywarsFFA;
 import org.bukkit.configuration.Configuration;
@@ -94,6 +96,29 @@ public class Database {
     }
     return -1;
   }
+
+  public int getRank(UUID uuid) {
+
+    try {
+      final Connection connection = getConnection();
+      final PreparedStatement preparedStatement = connection.prepareStatement(
+          "SELECT * FROM SkyWarsFFAStats ORDER BY KILLS DESC;");
+      ResultSet results = preparedStatement.executeQuery();
+      int rank = 0;
+      while (results.next()) {
+        final UUID resultUUID = UUID.fromString(results.getString("UUID"));
+        rank++;
+        if(resultUUID.equals(uuid)) {
+          return rank;
+        }
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return -1;
+    }
+    return -1;
+  }
+
 
   public void sendKeelAlivePing() {
     try {
