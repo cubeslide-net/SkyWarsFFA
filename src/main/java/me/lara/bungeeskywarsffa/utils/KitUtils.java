@@ -26,14 +26,19 @@ public class KitUtils {
     player.getInventory().setItem(0,
         ItemBuilder.buildItem(Material.DIAMOND_SWORD, 1, "§3§lDiamond Sword", Arrays.asList(""),
             true));
-    player.getInventory().setItem(1, ItemBuilder.buildItem(Material.COBWEB, 16, "§3Web",
+
+    player.getInventory().setItem(1,
+        ItemBuilder.buildItem(Material.FISHING_ROD, 1, "§3§lTryhard Rod", Arrays.asList(""),
+            true));
+
+    player.getInventory().setItem(2, ItemBuilder.buildItem(Material.COBWEB, 16, "§3Web",
         Arrays.asList("", "§3§lWorld wide Web."), false));
-    player.getInventory().setItem(2,
+    player.getInventory().setItem(3,
         ItemBuilder.buildItem(Material.GOLDEN_APPLE, 3, "§6§lGolden Apple", Arrays.asList(""),
             false));
-    player.getInventory().setItem(8,
+    player.getInventory().setItem(4,
         ItemBuilder.buildItem(Material.ENDER_PEARL, 2, "§5§lEnderpearl", Arrays.asList(""), false));
-    player.getInventory().setItem(3,
+    player.getInventory().setItem(5,
         ItemBuilder.buildItem(Material.COBBLESTONE, 32, "§eCobblestone",
             Arrays.asList("", "§eCobblestone"), false));
 

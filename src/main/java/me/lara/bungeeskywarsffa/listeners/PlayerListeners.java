@@ -103,9 +103,8 @@ public class PlayerListeners implements Listener {
     }.runTaskLater(BungeeSkywarsFFA.getInstance(), 20 * 5);
 
     if (killer instanceof Player && killer != player) {
-      Bukkit.broadcastMessage(
-          BungeeSkywarsFFA.getPrefix() + "§4" + player.getName() + "§c got killed by §4"
-              + killer.getName());
+      Bukkit.broadcastMessage(BungeeSkywarsFFA.getPrefix() + "§4" + player.getName() + "§c got killed by §4"
+          + killer.getName() + " §8[§c" + Math.round(killer.getHealth()/2) +  "§4❤§8]");
       killer.sendMessage(
           BungeeSkywarsFFA.getPrefix() + "§aYou killed §2" + player.getName() + "§a!");
       killer.setHealth(killer.getMaxHealth());
@@ -187,7 +186,7 @@ public class PlayerListeners implements Listener {
         } else {
           Bukkit.broadcastMessage(
               BungeeSkywarsFFA.getPrefix() + "§4" + player.getName() + "§c got killed by §4"
-                  + killer.getName());
+                  + killer.getName() + " §8[§c" + Math.round(killer.getHealth()/2) +  "§4❤§8]");
           killer.sendMessage(
               BungeeSkywarsFFA.getPrefix() + "§aYou killed §2" + player.getName() + "§a!");
           killer.setHealth(killer.getMaxHealth());
