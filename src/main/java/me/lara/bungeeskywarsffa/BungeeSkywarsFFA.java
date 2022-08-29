@@ -1,11 +1,15 @@
 package me.lara.bungeeskywarsffa;
 
+import de.hglabor.knockbackapi.api.KnockbackConfiguration;
+import de.hglabor.knockbackapi.api.KnockbackSettings;
+import de.hglabor.knockbackapi.registry.EntityKnockbackRegistry;
 import fr.mrmicky.fastboard.FastBoard;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -139,6 +143,18 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
         }
       }
     }.runTaskTimer(getInstance(), 20 * 300, 20 * 300);
+
+
+    EntityKnockbackRegistry.INSTANCE.register(
+        this,
+        new KnockbackConfiguration(
+            Map.of(),
+            new KnockbackSettings()
+                .modifyKnockback(true)
+                .knockbackFriction(3.0)
+                .knockbackHorizontal(0.65)
+        ));
+
   }
 
   @SuppressWarnings("checkstyle:Indentation")

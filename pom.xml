@@ -6,7 +6,7 @@
 
     <groupId>me.lara</groupId>
     <artifactId>BungeeSkywarsFFA</artifactId>
-    <version>1.1.2-SNAPSHOT</version>
+    <version>1.1.4-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>BungeeSkywarsFFA</name>
@@ -23,8 +23,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.10.1</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <source>9</source>
+                    <target>9</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -77,13 +77,18 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.19.1-R0.1-SNAPSHOT</version>
+            <version>1.19.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>fr.mrmicky</groupId>
             <artifactId>fastboard</artifactId>
             <version>1.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>de.hglabor</groupId>
+            <artifactId>knockback-api</artifactId>
+            <version>1.19.0</version>
         </dependency>
     </dependencies>
 </project>

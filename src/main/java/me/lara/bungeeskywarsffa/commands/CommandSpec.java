@@ -1,7 +1,6 @@
 package me.lara.bungeeskywarsffa.commands;
 
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.UUID;
 import me.lara.bungeeskywarsffa.BungeeSkywarsFFA;
 import me.lara.bungeeskywarsffa.utils.LocationUtils;
