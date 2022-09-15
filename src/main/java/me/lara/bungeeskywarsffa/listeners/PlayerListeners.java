@@ -50,6 +50,7 @@ public class PlayerListeners implements Listener {
     if (LocationUtils.spawnLocation() == null) {
       player.sendMessage(
           "§cBungeeSkyWarsFFA Setup is not completed! Spawn is not set.\n§cPlease make sure to complete the Setup with /setup!");
+      return;
     }
 
     player.teleport(Objects.requireNonNull(LocationUtils.spawnLocation()));
@@ -64,17 +65,27 @@ public class PlayerListeners implements Listener {
   }
 
   @EventHandler
+  public void onEntityDamage(EntityDamageByEntityEvent event) {
+    if(event.getEntity() instanceof Player && event.getDamager() instanceof Player) {
+
+      Player player = (Player) event.getDamager();
+
+      if(CommandSpec.vanished.contains(player.getUniqueId())) {
+        event.setCancelled(true);
+        player.sendMessage(BungeeSkywarsFFA.getPrefix() + "§cYou are not allowed to hit Players while being vanish.");
+      }
+
+    }
+  }
+
+  @EventHandler
   public void onDamage(EntityDamageEvent event) {
     if (event.getEntity() instanceof Player) {
       final Player player = (Player) event.getEntity();
 
       if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
         event.setCancelled(true);
-      }
-
-      if(CommandSpec.vanished.contains(player.getUniqueId())) {
-        event.setCancelled(true);
-        player.sendMessage(BungeeSkywarsFFA.getPrefix() + "§cYou are not allowed to hit Players while being vanish.");
+        return;
       }
 
       if (player.getLocation().getY()
@@ -142,6 +153,7 @@ public class PlayerListeners implements Listener {
     if (LocationUtils.spawnLocation() == null) {
       player.sendMessage(
           "§cBungeeSkyWarsFFA Setup is not completed! Spawn is not set.\n§cPlease make sure to complete the Setup with /setup!");
+      return;
     }
 
     event.setRespawnLocation(Objects.requireNonNull(LocationUtils.spawnLocation()));
@@ -226,8 +238,7 @@ public class PlayerListeners implements Listener {
       Block block = event.getClickedBlock();
 
       assert block != null;
-      if (block.getType().toString().toLowerCase().contains("door")
-          || block.getType() == Material.BEACON) {
+      if (block.getType().isInteractable()) {
         event.setCancelled(true);
       }
     }
@@ -250,12 +261,6 @@ public class PlayerListeners implements Listener {
 
   @EventHandler
   public void onFoodLevelChange(FoodLevelChangeEvent event) {
-
-    if (!(event.getEntity() instanceof Player)) {
-      return;
-    }
-
-    event.getEntity().setFoodLevel(20);
     event.setCancelled(true);
   }
 
