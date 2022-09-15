@@ -105,27 +105,6 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
           long breakTime =
               System.currentTimeMillis() - WorldListeners.blockExistTimeList.get(block);
           if (breakTime > 1000 * 5) {
-
-            if (WorldListeners.blockExistTimePlayerList.containsKey(block)) {
-              final Player player = WorldListeners.blockExistTimePlayerList.get(block).getPlayer();
-              assert player != null;
-
-              if (LocationUtils.spawnLocation() != null
-                  && player.getLocation().getY() < Objects.requireNonNull(
-                  LocationUtils.spawnLocation()).getY()) {
-                if (block.getType() == Material.COBBLESTONE) {
-                  player.getInventory().addItem(
-                      ItemBuilder.buildItem(Material.COBBLESTONE, 1, "§eCobblestone",
-                          Arrays.asList("", "§eCobblestone"), false));
-                } else if (block.getType() == Material.COBWEB) {
-                  player.getInventory().addItem(ItemBuilder.buildItem(Material.COBWEB, 1, "§3Web",
-                      Arrays.asList("", "§3§lWorld wide Web."), false));
-                }
-
-                player.updateInventory();
-              }
-              WorldListeners.blockExistTimePlayerList.remove(block);
-            }
             WorldListeners.blockExistTimeList.remove(block);
             Objects.requireNonNull(Bukkit.getWorld(block.getWorld().getName()))
                 .getBlockAt(block.getLocation()).setType(Material.AIR);

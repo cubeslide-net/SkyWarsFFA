@@ -122,10 +122,6 @@ public class PlayerListeners implements Listener {
       Bukkit.broadcastMessage(BungeeSkywarsFFA.getPrefix() + "§4" + player.getName() + "§c died.");
     }
 
-    for (Block block : WorldListeners.blockExistTimeList.keySet()) {
-      WorldListeners.blockExistTimePlayerList.remove(block);
-    }
-
     player.sendMessage(BungeeSkywarsFFA.getPrefix() + "§4You died.");
 
     final UUID uuid = player.getUniqueId();
@@ -169,12 +165,6 @@ public class PlayerListeners implements Listener {
       player.getInventory().clear();
       player.teleport(Objects.requireNonNull(LocationUtils.spawnLocation()));
       player.setHealth(20);
-
-      if (!WorldListeners.blockExistTimeList.isEmpty()) {
-        for (Block block : WorldListeners.blockExistTimeList.keySet()) {
-          WorldListeners.blockExistTimePlayerList.remove(block);
-        }
-      }
 
       player.sendMessage(BungeeSkywarsFFA.getPrefix() + "§4You died.");
 

@@ -18,7 +18,6 @@ import org.bukkit.event.weather.WeatherChangeEvent;
 public class WorldListeners implements Listener {
 
   public static final ConcurrentHashMap<Block, Long> blockExistTimeList = new ConcurrentHashMap<>();
-  public static final ConcurrentHashMap<Block, Player> blockExistTimePlayerList = new ConcurrentHashMap<>();
   private final HashMap<UUID, Long> lastCobwebPlace = new HashMap<>();
 
   @EventHandler
@@ -65,7 +64,6 @@ public class WorldListeners implements Listener {
     }
 
     blockExistTimeList.put(block, System.currentTimeMillis());
-    blockExistTimePlayerList.put(block, player);
   }
 
   @EventHandler
