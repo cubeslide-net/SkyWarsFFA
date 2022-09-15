@@ -22,7 +22,7 @@ public class WorldListeners implements Listener {
 
   @EventHandler
   public void onBreak(BlockBreakEvent event) {
-    
+
     final Block block = event.getBlock();
     if(block.getType() == Material.COBWEB || block.getType() == Material.LEGACY_WEB) {
       return;
