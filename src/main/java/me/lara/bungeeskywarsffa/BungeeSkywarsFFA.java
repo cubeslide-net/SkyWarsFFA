@@ -77,6 +77,8 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
     config.addDefault("Gameplay.limitCobweb", true);
     config.addDefault("Gameplay.cobWebPlaceDelayTimeSeconds", 3);
 
+    config.addDefault("Gameplay.1_8_Knockback", true);
+
     config.addDefault("Messages.stats",
         Arrays.asList("&7&m--------&r&6Stats of %player%&7§m--------",
             "&eKills&8: &3%kills%",
@@ -124,15 +126,18 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
     }.runTaskTimer(getInstance(), 20 * 300, 20 * 300);
 
 
-    EntityKnockbackRegistry.INSTANCE.register(
-        this,
-        new KnockbackConfiguration(
-            Map.of(),
-            new KnockbackSettings()
-                .modifyKnockback(true)
-                .knockbackFriction(3.0)
-                .knockbackHorizontal(0.65)
-        ));
+    if(getConfig().getBoolean("Gameplay.1_8_Knockback")){
+      EntityKnockbackRegistry.INSTANCE.register(
+              this,
+              new KnockbackConfiguration(
+                      Map.of(),
+                      new KnockbackSettings()
+                              .modifyKnockback(true)
+                              .knockbackFriction(3.0)
+                              .knockbackHorizontal(0.65)
+              ));
+    }
+
 
   }
 
