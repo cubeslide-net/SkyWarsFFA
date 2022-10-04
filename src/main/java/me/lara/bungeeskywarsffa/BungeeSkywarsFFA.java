@@ -89,7 +89,7 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
 
     config.addDefault("Scoreboard.title", "&b&lCubeSlide.net");
     config.addDefault("Scoreboard.lines",
-        Arrays.asList("", "&3Kills", "&b%kills%", "", "&3Deaths", "&b%deaths%", "", "&eKillStreak",
+        Arrays.asList("", "&3Kills", "&b%kills%", "", "&3Deaths", "&b%deaths%", "", "&3Rank", "&b%rank%", "", "&eKillStreak",
             "&6%killstreak%"));
 
     config.options().copyDefaults(true);
@@ -164,7 +164,7 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
       tempList.add(lines.replace("%kills%", String.valueOf(kills))
           .replace("%deaths%", String.valueOf(deaths)).replace("%killstreak%",
               String.valueOf(PlayerListeners.killStreakCount.getOrDefault(uuid, 0)))
-          .replace("&", "§"));
+          .replace("&", "§").replace("%rank%", String.valueOf(database.getRank(uuid))));
     }
 
     FastBoard board;

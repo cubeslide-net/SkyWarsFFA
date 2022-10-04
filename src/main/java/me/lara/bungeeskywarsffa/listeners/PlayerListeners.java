@@ -66,6 +66,9 @@ public class PlayerListeners implements Listener {
 
   @EventHandler
   public void onEntityDamage(EntityDamageByEntityEvent event) {
+
+    if(CommandSpec.vanished.isEmpty()) return;
+
     if(event.getEntity() instanceof Player && event.getDamager() instanceof Player) {
 
       Player player = (Player) event.getDamager();
