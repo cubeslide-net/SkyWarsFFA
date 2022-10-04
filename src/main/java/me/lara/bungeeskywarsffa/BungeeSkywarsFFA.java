@@ -166,6 +166,7 @@ public final class BungeeSkywarsFFA extends JavaPlugin {
     if (!boards.containsKey(uuid)) {
       board = new FastBoard(player);
       board.updateTitle(getStringFromPath("Scoreboard.title"));
+      boards.put(uuid, board);
     } else {
       board = boards.get(uuid);
     }
