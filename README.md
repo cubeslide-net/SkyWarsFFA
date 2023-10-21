@@ -1,6 +1,6 @@
 SkyWarsFFA
 
-Any bugs/requests? Join my Discord: https://discord.cubeslide.net
+Any bugs/requests? Join my Discord: https://pfcard.link/discord
 
 Features:
 
